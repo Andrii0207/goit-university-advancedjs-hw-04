@@ -1,6 +1,7 @@
 
 
 function createGallery(resp) {
+
     return resp.map(({ largeImageURL, tags, likes, views, comments, downloads }) => `<div class="photo-card">
     <img class="photo" src="${largeImageURL}" alt="${tags}" loading="lazy" />
     <div class="info">
