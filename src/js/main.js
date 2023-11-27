@@ -38,6 +38,7 @@ async function onSearchSubmit(evt) {
     const data = resp.data;
     console.log("resp (submit) >>>", resp)
     console.log("resp.data (submit) >>>", data)
+    console.log("data.total (submit) >>>", data.total)
 
     if (data.hits.lenght === 0) {
         return alert("Incorrect query name, try again")
