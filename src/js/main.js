@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce';
 import { infoMessage, successMessage } from "./service";
 import searchPhoto from '/js/api';
 import createGallery from './markup';
@@ -7,7 +8,8 @@ const refs = {
     input: document.querySelector('.input'),
     btn: document.querySelector('.submit-btn'),
     gallery: document.querySelector('.gallery'),
-    guard: document.querySelector('.js-guard')
+    guard: document.querySelector('.js-guard'),
+    buttonUp: document.querySelector('.button-up')
 }
 
 let page = 1;
@@ -22,6 +24,7 @@ const options = {
 let observer = new IntersectionObserver(handlerLoadMore, options);
 
 refs.form.addEventListener('submit', onSearchSubmit)
+window.addEventListener("scroll", debounce(onViewportScroll, 500))
 // refs.loadMoreBtn.addEventListener('click', handlerLoadMore)
 
 // async function handlerLoadMore() {
@@ -37,8 +40,6 @@ refs.form.addEventListener('submit', onSearchSubmit)
 //         return refs.loadMoreBtn.classList.add('visually-hidden')
 //     }
 // }
-
-
 
 async function onSearchSubmit(evt) {
     evt.preventDefault();
@@ -85,4 +86,12 @@ function handlerLoadMore(entries) {
             }
         }
     });
+}
+
+function onViewportScroll() {
+    if (window.scrollY >= 1000) {
+        refs.buttonUp.classList.toggle('visually-hidden', false);
+    } else {
+        refs.buttonUp.classList.toggle('visually-hidden', true);
+    }
 }
