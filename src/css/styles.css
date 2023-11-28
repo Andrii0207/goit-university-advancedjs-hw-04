@@ -11,13 +11,26 @@
   font-weight: 400;
 
   color: #242424;
-  background-color: rgba(255, 255, 255, 0.87);
+  background-color: rgba(255, 255, 255, 0.8);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: rgb(241, 240, 240);
 }
 
 .gallery {
@@ -31,40 +44,67 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: rgb(96, 111, 167);
+  background-color: rgb(131, 138, 165);
 }
 
 .input {
-  width: 300px;
+  width: 250px;
   height: 30px;
   margin-top: 15px;
   margin-bottom: 15px;
+  border-radius: 3px;
+  border-style: none;
+  padding-left: 10px;
+  margin-right: 5px;
+  background-color: rgb(241, 240, 240);
 }
 
 .submit-btn {
   height: 30px;
   width: 100px;
+  border-radius: 3px;
+  border-style: none;
+  background-color: rgb(241, 240, 240);
+  color: rgb(69, 69, 69);
+}
+
+.submit-btn:hover,
+.submit-btn:focus {
+  background-color: cornflowerblue;
+  border-style: none;
+}
+
+.photo-card {
+  margin: 8px;
+  box-shadow: 0px 2px 1px 0px rgba(46, 47, 66, 0.08),
+    0px 1px 1px 0px rgba(46, 47, 66, 0.16),
+    0px 1px 6px 0px rgba(46, 47, 66, 0.08);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: rgb(255, 255, 255);
+  border-radius: 3px;
 }
 
 .photo-card:hover,
 .photo-card:focus {
-  transform: scale(1.1);
-  transition: transform cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.05);
+  box-shadow: 0px 2px 1px 0px rgba(46, 47, 66, 0.08),
+    0px 1px 1px 0px rgba(46, 47, 66, 0.16),
+    0px 1px 6px 0px rgba(46, 47, 66, 0.08);
+  /* cursor: zoom-in; */
 }
 
 .photo {
   width: 300px;
   height: 200px;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin: 15px;
   background-repeat: no-repeat;
   background-size: cover;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .info {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   height: 50px;
   margin-left: 10px;
   margin-right: 10px;
