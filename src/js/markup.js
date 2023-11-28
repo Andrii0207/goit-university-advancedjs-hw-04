@@ -1,5 +1,4 @@
 
-
 function createGallery(resp) {
 
     return resp.map(({ largeImageURL, tags, likes, views, comments, downloads }) => `<div class="photo-card">
