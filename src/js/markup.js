@@ -1,8 +1,10 @@
 
 function createGallery(resp) {
-
-    return resp.map(({ largeImageURL, tags, likes, views, comments, downloads }) => `<div class="photo-card">
-    <img class="photo" src="${largeImageURL}" alt="${tags}" loading="lazy" />
+    return resp.map(({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) => `
+    <li class="photo-card">
+        <a class="gallery__link" href="${largeImageURL}">
+            <img class="photo" src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </a>
     <div class="info">
         <p class="info-item">
             <b>Likes:</b> ${likes}
@@ -17,16 +19,8 @@ function createGallery(resp) {
             <b>Downloads:</b> ${downloads}
         </p>
     </div>
-</div>`).join("")
+</li>
+    `).join("")
 }
 
 export default createGallery;
-
-// webformatURL - посилання на маленьке зображення для списку карток.
-// largeImageURL - посилання на велике зображення.
-// tags - рядок з описом зображення.Підійде для атрибуту alt.
-// likes - кількість лайків.
-// views - кількість переглядів.
-// comments - кількість коментарів.
-
-// downloads - кількість завантажень.

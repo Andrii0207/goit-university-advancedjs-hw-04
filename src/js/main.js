@@ -1,4 +1,6 @@
 import debounce from 'lodash.debounce';
+import "simplelightbox/dist/simple-lightbox.min.css";
+import SimpleLightbox from "simplelightbox";
 import { infoMessage, successMessage } from "./service";
 import searchPhoto from '/js/api';
 import createGallery from './markup';
@@ -15,6 +17,15 @@ const refs = {
 let page = 1;
 let searchQuery;
 
+const gallery = new SimpleLightbox(".gallery a", {
+    showCounter: false,
+    captionDelay: 250,
+    captionPosition: "bottom",
+    close: false,
+    overlayOpacity: 1,
+    captionsData: `alt`
+})
+
 const options = {
     root: null,
     rootMargin: "100px",
@@ -25,21 +36,6 @@ let observer = new IntersectionObserver(handlerLoadMore, options);
 
 refs.form.addEventListener('submit', onSearchSubmit)
 window.addEventListener("scroll", debounce(onViewportScroll, 500))
-// refs.loadMoreBtn.addEventListener('click', handlerLoadMore)
-
-// async function handlerLoadMore() {
-//     page += 1;
-//     const resp = await searchPhoto(searchQuery, page);
-// const data = resp.data;
-// let total_pages = data.hits.total / data.hits.totalHits
-//     console.log("resp load_more >>>", resp)
-//     console.log("resp.data (load_more) >>>", resp.data)
-//     refs.gallery.insertAdjacentHTML('beforeend', createGallery(data.hits));
-//     if (total_pages >= 500 || page >= 13) {
-//         console.log("click LOAD_MORE")
-//         return refs.loadMoreBtn.classList.add('visually-hidden')
-//     }
-// }
 
 async function onSearchSubmit(evt) {
     evt.preventDefault();
@@ -52,19 +48,15 @@ async function onSearchSubmit(evt) {
     observer.observe(refs.guard)
 
     const resp = await searchPhoto(searchQuery, page);
-    const data = resp.data;
-    console.log("resp (submit) >>>", resp)
-    console.log("resp.data (submit) >>>", data)
-    console.log("data.total (submit) >>>", data.total)
-    console.log("data.hits.length (submit) >>>", data.hits.length)
 
-    if (data.hits.length === 0) {
+    if (resp.data.hits.length === 0) {
         infoMessage("Sorry, there are no images matching your search query. Please try again.");
         return refs.form.reset();
     }
-    successMessage(data.total)
+    successMessage(resp.data.total)
 
-    refs.gallery.innerHTML = createGallery(data.hits);
+    refs.gallery.innerHTML = createGallery(resp.data.hits);
+    gallery.refresh();
     refs.form.reset();
     return;
 }
@@ -82,7 +74,7 @@ function handlerLoadMore(entries) {
                 observer.disconnect();
                 return setTimeout(() => {
                     infoMessage("We're sorry, but you've reached the end of search results.")
-                }, 9000);
+                }, 7000);
             }
         }
     });
