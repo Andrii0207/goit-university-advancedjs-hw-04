@@ -2,7 +2,7 @@
 function createGallery(resp) {
     return resp.map(({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) => `
     <li class="photo-card">
-        <a class="gallery__link" href="${largeImageURL}">
+        <a class="photo-link" href="${largeImageURL}">
             <img class="photo" src="${webformatURL}" alt="${tags}" loading="lazy" />
         </a>
     <div class="info">
