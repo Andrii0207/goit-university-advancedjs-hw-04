@@ -66,11 +66,12 @@ function handlerLoadMore(entries) {
         if (entry.isIntersecting) {
             page += 1;
             const resp = await searchPhoto(searchQuery, page);
+            const total_pages = Math.ceil(resp.data.totalHits / resp.config.params.per_page)
 
             refs.gallery.insertAdjacentHTML('beforeend', createGallery(resp.data.hits));
             gallery.refresh();
 
-            if (page >= 13) {
+            if (page >= 13 || page >= total_pages) {
                 observer.disconnect();
                 return setTimeout(() => {
                     infoMessage("We're sorry, but you've reached the end of search results.")
