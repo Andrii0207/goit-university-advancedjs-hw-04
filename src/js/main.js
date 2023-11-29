@@ -39,7 +39,7 @@ window.addEventListener("scroll", debounce(onViewportScroll, 500))
 
 async function onSearchSubmit(evt) {
     evt.preventDefault();
-    page = 11;
+    page = 1;
     searchQuery = evt.target.searchQuery.value;
 
     if (searchQuery === "") {
@@ -63,12 +63,12 @@ async function onSearchSubmit(evt) {
 
 function handlerLoadMore(entries) {
     entries.forEach(async entry => {
-        console.log(entry)
         if (entry.isIntersecting) {
             page += 1;
             const resp = await searchPhoto(searchQuery, page);
 
-            refs.gallery.insertAdjacentHTML('beforeend', createGallery(resp.data.hits))
+            refs.gallery.insertAdjacentHTML('beforeend', createGallery(resp.data.hits));
+            gallery.refresh();
 
             if (page >= 13) {
                 observer.disconnect();
