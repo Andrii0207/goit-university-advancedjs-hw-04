@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce';
 import "simplelightbox/dist/simple-lightbox.min.css";
 import SimpleLightbox from "simplelightbox";
-import { infoMessage, successMessage } from "./service";
+import { infoMessage, successMessage, errorMessage } from "./service";
 import searchPhoto from '/js/api';
 import createGallery from './markup';
 
@@ -28,7 +28,7 @@ const gallery = new SimpleLightbox(".gallery a", {
 
 const options = {
     root: null,
-    rootMargin: "100px",
+    rootMargin: "200px",
     threshold: 1.0,
 };
 
@@ -40,25 +40,34 @@ window.addEventListener("scroll", debounce(onViewportScroll, 500))
 async function onSearchSubmit(evt) {
     evt.preventDefault();
     page = 1;
-    searchQuery = evt.target.searchQuery.value;
+    searchQuery = evt.target.searchQuery.value.trim().toLowerCase();
 
     if (searchQuery === "") {
         return infoMessage("Sorry, there are no images matching your search query. Please try again.");
     }
-    observer.observe(refs.guard)
+    refs.gallery.innerHTML = '';
 
     const resp = await searchPhoto(searchQuery, page);
 
     if (resp.data.hits.length === 0) {
-        infoMessage("Sorry, there are no images matching your search query. Please try again.");
-        return refs.form.reset();
+        refs.form.reset();
+        return infoMessage("Sorry, there are no images matching your search query. Please try again.");
     }
-    successMessage(resp.data.total)
+    successMessage(resp.data.total);
+
+    const total_pages = Math.ceil(resp.data.totalHits / resp.config.params.per_page)
 
     refs.gallery.innerHTML = createGallery(resp.data.hits);
+
     gallery.refresh();
     refs.form.reset();
-    return;
+
+    if (total_pages === 1 || !resp.data.hits) {
+        return setTimeout(() => {
+            infoMessage("We're sorry, but you've reached the end of search results.")
+        }, 5000);
+    }
+    observer.observe(refs.guard);
 }
 
 function handlerLoadMore(entries) {
@@ -75,7 +84,7 @@ function handlerLoadMore(entries) {
                 observer.disconnect();
                 return setTimeout(() => {
                     infoMessage("We're sorry, but you've reached the end of search results.")
-                }, 7000);
+                }, 5000);
             }
         }
     });

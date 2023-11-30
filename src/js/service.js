@@ -21,4 +21,13 @@ function successMessage(totalHits) {
     });
 }
 
-export { infoMessage, successMessage };
+function errorMessage(error) {
+    iziToast.error({
+        title: 'Error',
+        message: `${error}`,
+        timeout: 3000,
+        position: "topLeft",
+    });
+}
+
+export { infoMessage, successMessage, errorMessage };
