@@ -39,6 +39,7 @@ window.addEventListener("scroll", debounce(onViewportScroll, 500))
 
 async function onSearchSubmit(evt) {
     evt.preventDefault();
+
     page = 1;
     searchQuery = evt.target.searchQuery.value.trim().toLowerCase();
 
@@ -46,7 +47,7 @@ async function onSearchSubmit(evt) {
         return infoMessage("Sorry, there are no images matching your search query. Please try again.");
     }
     refs.gallery.innerHTML = '';
-
+    observer.disconnect();
     const resp = await searchPhoto(searchQuery, page);
 
     if (resp.data.hits.length === 0) {
@@ -56,6 +57,7 @@ async function onSearchSubmit(evt) {
     successMessage(resp.data.total);
 
     const total_pages = Math.ceil(resp.data.totalHits / resp.config.params.per_page)
+
 
     refs.gallery.innerHTML = createGallery(resp.data.hits);
 
